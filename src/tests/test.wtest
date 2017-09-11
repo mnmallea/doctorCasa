@@ -1,0 +1,43 @@
+import persona.*
+import EnfermedadAutoinmune.*
+import EnfermedadInfecciosa.*
+
+describe "tests"{
+	const unaMalaria = new EnfermedadInfecciosa("Malaria",500)
+	const otitis = new EnfermedadInfecciosa("Otitis",100)
+	const lupus = new EnfermedadAutoinmune("Lupus",10000)
+	const otraMalaria = new EnfermedadInfecciosa("Malaria",800)
+	
+	const logan = new Persona(3000000,36,#{unaMalaria,otitis,lupus})
+	const frank = new Persona(3500000,36,#{})
+	
+	test "frank contrae la otraMalaria, pasa un dia y su temperatura es 36.8"{
+		frank.contraerEnfermedad(otraMalaria)
+		frank.pasarUnDia()
+		assert.equals(36.8,frank.temperatura())
+	}
+	test "unaMalaria se reproduce, ahora hay 1000 celulas afectadas"{
+		unaMalaria.reproducirse()
+		assert.equals(1000,unaMalaria.celulasAmenazadas())
+	}
+	test "logan vive un dia de su vida,ninguna de sus enfermedades es agresiva"{
+		logan.pasarUnDia()
+		assert.equals(0, logan.celulasAmenazadasPorAgresivas())
+	}
+	test "la enfermedad que mas celulas afecta es el lupus"{
+		logan.pasarUnDia()
+		assert.equals(lupus,logan.enfermedadMasAmenazante())
+	}
+	test "logan vive 31 dias de su vida,entonces el lupus es agresivo"{
+		31.times({logan.pasarUnDia()})
+		assert.equals(10000, logan.celulasAmenazadasPorAgresivas())
+	}
+	test "logan vive 365 dias de su vida,entonces sus tres enfermedades son agresivo"{
+		365.times({logan.pasarUnDia()})
+		assert.equals(10600, logan.celulasAmenazadasPorAgresivas())
+	}
+	test "la enfermedad que mas celulas afecta es el lupus, luego de  31 dias"{
+		31.times({logan.pasarUnDia()})
+		assert.equals(lupus,logan.enfermedadMasAmenazante())
+	}
+}
