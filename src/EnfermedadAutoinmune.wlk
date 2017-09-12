@@ -1,7 +1,7 @@
 class EnfermedadAutoinmune{
 	var nombre
 	var celulasAmenazadas
-	var diasAtacando = 0
+	var diasAtacandoPorPersona = new Dictionary()
 	
 	constructor(unNombre,unasCelulas){
 		nombre = unNombre
@@ -12,10 +12,14 @@ class EnfermedadAutoinmune{
 	
 	method atacar(unaPersona){
 		unaPersona.destruirCelulas(celulasAmenazadas)
-		diasAtacando+=1
+		diasAtacandoPorPersona.put(unaPersona,self.cuantosDiasAtacoA(unaPersona) + 1)
+	}
+	
+	method cuantosDiasAtacoA(unaPersona){
+		return diasAtacandoPorPersona.getOrElse(unaPersona, {0})
 	}
 	
 	method esAgresiva(unaPersona){
-		return diasAtacando>30
+		return self.cuantosDiasAtacoA(unaPersona)>30
 	}
 }
