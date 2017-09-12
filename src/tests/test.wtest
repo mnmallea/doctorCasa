@@ -10,6 +10,7 @@ describe "tests"{
 	
 	const logan = new Persona(3000000,36,#{unaMalaria,otitis,lupus})
 	const frank = new Persona(3500000,36,#{})
+	const messi = new Persona(200000,36,#{lupus})
 	
 	test "frank contrae la otraMalaria, pasa un dia y su temperatura es 36.8"{
 		frank.contraerEnfermedad(otraMalaria)
@@ -39,5 +40,17 @@ describe "tests"{
 	test "la enfermedad que mas celulas afecta es el lupus, luego de  31 dias"{
 		31.times({logan.pasarUnDia()})
 		assert.equals(lupus,logan.enfermedadMasAmenazante())
+	}
+	test "messi tiene lupus, pasan 100 dias, y las celulasAmenazadasPorAgresivas son 100000"{
+		100.times({messi.pasarUnDia()})
+		assert.equals(10000,messi.celulasAmenazadasPorAgresivas())
+	}
+	test "messi tiene lupus, pasan 100 dias, y las celulasAmenazadasPorAgresivas son 0, porque el lupus no es agresivo"{
+		10.times({messi.pasarUnDia()})
+		assert.equals(0,messi.celulasAmenazadasPorAgresivas())
+	}
+	test "messi tiene lupus, pasan 10 dias, y queda con 100000 celulas"{
+		10.times({messi.pasarUnDia()})
+		assert.equals(100000,messi.cantidadDeCelulas())
 	}
 }
